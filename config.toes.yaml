@@ -1,0 +1,12 @@
+mysql:
+  host: rm-uf65u18gj63n1eqplko.mysql.rds.aliyuncs.com # MySQL 机器 ip 和端口，默认 127.0.0.1:3306
+  username: root # MySQL 用户名(建议授权最小权限集)
+  passWord: xxxx # MySQL 用户密码
+  database: library # 系统所用的数据库名
+
+version:     "v1"
+packageName: "library"
+toesRoot: "toes"
+createQueryConfig: true
+
+run:
