@@ -1,6 +1,7 @@
 package toes
 
 import (
+	"errors"
 	"github.com/starjun/gotools/v2"
 	"log"
 	"os"
@@ -26,7 +27,6 @@ mysql:
   maxOpenConnections: 100 # MySQL 最大打开的连接数，默认 100
   maxConnectionLifeTime: 10s # 空闲连接最大存活时间，默认 10s
   logLevel: 4 # GORM log level, 1: silent, 2:error, 3:warn, 4:info
-  passwordMode: raw # 密码加密模式，raw:明文，aes:本地加密, mist:密码托管
 
 # Redis
 redis:
@@ -46,7 +46,7 @@ log:
 # 加密之后
 seckey:
   basekey: ""
-  #  jwtKey: # 基于 basekey 计算
+  jwtKey: ""
   jwtttl: 1024 # token 过期时间(分钟)
   pproftoken : on # 配置访问 pprof 是否启用 token 检查
 
@@ -59,7 +59,7 @@ checkHeader:
   time: true
   seconds: 120
   sign: true
-  # key: "" #基于 basekey 计算
+  key: ""
 
 # 请求头相关配置
 header:
@@ -67,23 +67,25 @@ header:
   requestid: x-request-id
 `
 
-func ConfFileGen(_Path string) {
-	filepath := path.Join(_Path, "toes.config.yaml")
+func (b *ToesGen) ConfFileGen() error {
+	filepath := path.Join(b.confPath, "toes.config.yaml")
 	re, err := gotools.PathExists(filepath)
 	if err != nil {
 		log.Println(err)
-		return
+		return err
 	}
 	if re {
 		log.Println(filepath, "已存在")
-		return
+		return errors.New(filepath + " 已存在")
 	}
 
 	f, e := os.OpenFile(filepath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 777)
 	if e != nil {
 		log.Println(e)
+		return e
 	}
 	confTpl = strings.Replace(confTpl, "{{at}}", "`", -1)
 	f.WriteString(confTpl)
 	f.Close()
+	return nil
 }

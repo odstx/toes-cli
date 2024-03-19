@@ -100,7 +100,7 @@ func GetVersion() string {
 func NewDefaultConfig() *Config {
 	return &Config{
 		Version:           "v1",
-		PackageName:       "mss",
+		PackageName:       "toesdemo",
 		ToesRoot:          "./",
 		CreateQueryConfig: false,
 		MysqlOptions: MySQLOptions{
