@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"github.com/spf13/viper"
+	"github.com/starjun/gotools/v2"
 	"github.com/starjun/toes-cli/util"
 	"gorm.io/gorm"
 	"io/ioutil"
@@ -113,7 +114,8 @@ func NewDefaultConfig() *Config {
 }
 
 func LoadConfig(cfg string) {
-	if !util.IsExist(cfg) {
+	re, _ := gotools.PathExists(cfg)
+	if !re {
 		createConfig()
 	}
 	if cfg != "" {
@@ -153,7 +155,8 @@ createQueryConfig: false
 
 func createConfig() {
 	fileName := "./config.toes.yaml"
-	if !util.IsExist(fileName) {
+	re, _ := gotools.PathExists(fileName)
+	if !re {
 		log.Printf("'%s' not exists. Do you want to create it? [Yes|No]\n", fileName)
 		if util.AskForConfirmation() {
 			ioutil.WriteFile(fileName, []byte(tmplConfig), 0777)
