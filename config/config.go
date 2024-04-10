@@ -2,13 +2,14 @@ package config
 
 import (
 	"fmt"
+	"io/ioutil"
+	"log"
+	"strings"
+
 	"github.com/spf13/viper"
 	"github.com/starjun/gotools/v2"
 	"github.com/starjun/toes-cli/util"
 	"gorm.io/gorm"
-	"io/ioutil"
-	"log"
-	"strings"
 )
 
 var (
@@ -23,6 +24,7 @@ var (
 	CreateQueryConfig bool
 	Version           string = "v1"
 	Path              string
+	RootPackage       string
 )
 
 type Config struct {
